@@ -1,0 +1,157 @@
+
+############################ Configuration of  RAID-0 RAID-1 RAID-10  RAID-5 Drive ########################## 
+	Create a Hard Disk Partition:
+	
+		1. Specify the disk device to create the partition.
+			# fdisk /dev/sda
+		2. Request a new primary or extended partitions.
+			Command (m for help): n
+				Partition type:
+				p primary (2 primary, 0 extended, 2 free)
+				e extended
+				Select (default p):
+		3. Select the size of partition.
+				If you want more size you can choose as your wish.
+				Partition number (1-4, default 1):
+		4. Verifying the partitions.
+				Command (m for help): p
+		5. Save the created partition.
+				Command (m for help): w
+		6. Partprobe.
+		7. Reboot.
+
+##########################################################################################################
+		Configuration of RAID-0:-
+				We need two Hard-disk for Raid-0.
+		==========================================
+[root@master ~]# lsblk
+[root@master ~]# blkid
+[root@master ~]# yum install mdadm
+[root@master ~]# mdadm --create --verbose /dev/node0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc
+[root@master ~]# mkdir /mnt/raid0
+[root@master ~]# mkfs.ext4 /dev/node0
+[root@master ~]# mount /dev/node0 /mnt/raid0
+[root@master ~]# df -h
+[root@master ~]# blkid
+        or
+[root@master ~]# blkid /dev/md0
+
+				Copy UUID 
+                   
+                   
+[root@master ~]# vi /etc/fstab
+
+				Add UUID & save
+                   
+                 
+[root@master ~]# mdadm --detail /dev/node0
+[root@master ~]# mount -av
+[root@master ~]# reboot or  (init 6)
+[root@master ~]# mdadm --detail /dev/node0
+[root@master ~]# df -h
+
+				We can stop RAID-0 disk and can Remove it by using below command.
+				=================================================================
+				
+[root@master ~]# umount /mnt/raid0
+[root@master ~]# mdadm --remove /dev/node0
+[root@master ~]# mdadm --stop /dev/node0
+
+############################################################################################
+
+		Configuration of RAID-1:-
+				We need two Hard-disk for Raid-1.
+		==========================================
+
+# lsblk
+# blkid
+# yum install mdadm
+# mdadm --create --verbose /dev/node1 --level=1 --raid-devices=2 /dev/sdd /dev/sde
+# mkdir /mnt/raid1-drive
+# mkfs.ext4 /dev/node1
+# mount /dev/node1 /mnt/raid1
+# df -h
+# blkid
+			or
+			
+# blkid /dev/node1
+                   
+			Copy UUID 
+                   
+# vi /etc/fstab
+
+            Add UUID & save
+			
+# df -h			
+# mount -av
+# reboot or (init 6)
+# mdadm --detail /dev/node1
+
+###########################################################################################
+
+		Configuration of RAID-10:-
+				We need Four Hard-disk for Raid-10.
+		===========================================
+# lsblk
+# blkid
+# yum install mdadm
+# mdadm --create --verbose /dev/node10 --level=10 --raid-devices=4 /dev/sdb /dev/sdc /dev/sdd /dev/sde
+# mkdir /mnt/raid10
+# mkfs.ext4 /dev/md10
+# mount /dev/node10 /mnt/raid10/
+# df -h
+# mdadm --detail /dev/md10
+# blkid
+        or
+# blkid /dev/node10
+                   Copy UUID  
+# vi /etc/fstab
+        
+                    Add UUID & save
+             
+# df -Th		 
+# mount -av
+# reboot or (init 6)
+# mdadm --detail /dev/node10
+# halt  
+			We can stop RAID-10 disk and can Remove it by using below command.
+			====================================================================
+# umount /mnt/raid10
+# mdadm --stop /dev/md10
+# mdadm --remove /dev/md10
+
+############################################################################################
+
+		Configuration of RAID-5:-
+				We need Three Hard-disk for Raid-5.
+		============================================
+# lsblk
+# blkid
+# yum install mdadm
+# mdadm --create --verbose /dev/node5 --level=5 --raid-devices=3 /dev/sdf /dev/sdg /dev/sdh
+# mkdir /mnt/raid5
+# mkfs.ext4 /dev/node5
+# mount /dev/node5 /mnt/raid5/
+# df -h
+# mdadm --detail /dev/node5
+# blkid
+				or
+# blkid /dev/node5
+               
+				Copy UUID  
+                   
+# vi /etc/fstab
+                    
+                Add UUID & save
+# df -h
+# mount -av
+# reboot  or (init 6)
+# mdadm --detail /dev/node5
+# halt  
+
+
+
+#################################################################################################
+
+
+

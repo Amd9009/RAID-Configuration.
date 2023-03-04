@@ -7,7 +7,7 @@
 		2. Request a new primary or extended partitions.
 			Command (m for help): n
 				Partition type:
-				p primary (2 primary, 0 extended, 2 free)
+				p primary (0 primary, 0 extended, 4 free)
 				e extended
 				Select (default p):
 		3. Select the size of partition.
@@ -34,7 +34,7 @@
 [root@master ~]# df -h
 [root@master ~]# blkid
         or
-[root@master ~]# blkid /dev/md0
+[root@master ~]# blkid /dev/node0
 
 				Copy UUID 
                    
@@ -97,10 +97,10 @@
 # yum install mdadm
 # mdadm --create --verbose /dev/node10 --level=10 --raid-devices=4 /dev/sdb /dev/sdc /dev/sdd /dev/sde
 # mkdir /mnt/raid10
-# mkfs.ext4 /dev/md10
+# mkfs.ext4 /dev/node10
 # mount /dev/node10 /mnt/raid10/
 # df -h
-# mdadm --detail /dev/md10
+# mdadm --detail /dev/node10
 # blkid
         or
 # blkid /dev/node10
@@ -117,8 +117,8 @@
 			We can stop RAID-10 disk and can Remove it by using below command.
 			====================================================================
 # umount /mnt/raid10
-# mdadm --stop /dev/md10
-# mdadm --remove /dev/md10
+# mdadm --stop /dev/node10
+# mdadm --remove /dev/node10
 
 ############################################################################################
 
